@@ -14,7 +14,8 @@ scrape_configs:
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
     static_configs:
-      - targets: ["localhost:1337"]
+      - targets: ["strapi:1337"]
+    metrics_path: /api/metrics
 
     # Example job for node_exporter
   # - job_name: "node"
