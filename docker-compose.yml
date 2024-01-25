@@ -1,20 +1,24 @@
 version: "3"
 services:
-  # strapi:
-  #   image: strapi/strapi:latest
-  #   environment:
-  #     DATABASE_CLIENT: postgres
-  #     DATABASE_NAME: strapi
-  #     DATABASE_HOST: postgres
-  #     DATABASE_PORT: 5432
-  #     DATABASE_USERNAME: strapi
-  #     DATABASE_PASSWORD: strapi
-  #   volumes:
-  #     - ./app:/srv/app
-  #   ports:
-  #     - "1337:1337"
-  #   depends_on:
-  #     - postgres
+  strapi:
+    build:
+      context: ./app
+    container_name: dockerstrapi
+    restart: unless-stopped
+    ports:
+      - "1337:1337"
+    environment:
+      NODE_ENV: development
+      DATABASE_CLIENT: postgres
+      DATABASE_NAME: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+    volumes:
+      - ./app:/opt/app
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres
@@ -62,16 +66,7 @@ services:
       - grafana-data:/var/lib/grafana
     restart: unless-stopped
 
-  # node_exporter:
-  #   image: quay.io/prometheus/node-exporter:latest
-  #   container_name: node_exporter
-  #   command:
-  #     - "--path.rootfs=/host"
-  #   pid: host
-  #   network_mode: host
-  #   restart: unless-stopped
-  #   volumes:
-  #     - "/:/host:ro,rslave"
+  
 
 volumes:
   prometheus-data:
