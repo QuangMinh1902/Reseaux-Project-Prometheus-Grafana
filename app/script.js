@@ -1,3 +1,4 @@
+const { Worker, isMainThread, workerData } = require("worker_threads");
 const axios = require("axios");
 
 // Fonction pour effectuer la requête une fois
@@ -11,29 +12,35 @@ async function fetchData() {
   }
 }
 
-// Fonction principale asynchrone pour effectuer la requête 1000 fois
-async function fetchDataMultipleTimes() {
-  const numberOfRequests = 1000;
+// Fonction exécutée dans chaque thread
+async function performRequestsInWorker() {
+  const { threadId, totalRequests } = workerData;
+  console.log(`Thread ${threadId} démarré.`);
 
-  // Crée un tableau de promesses pour les 1000 requêtes
-  const promises = Array.from({ length: numberOfRequests }, () => fetchData());
+  for (let i = 1; i <= totalRequests; i++) {
+    console.log(`Thread ${threadId}, Requête ${i}: fetchData()`);
+    await fetchData();
+  }
 
-  try {
-    // Utilise Promise.all pour exécuter toutes les promesses en parallèle
-    const results = await Promise.all(promises);
+  console.log(`Thread ${threadId} terminé.`);
+}
 
-    // Compteur pour les chiffres
-    let counter = 1;
+// Fonction principale pour lancer les threads
+function main() {
+  const totalThreads = 100;
 
-    // Les résultats contiennent les données de chaque requête
-    for (const result of results) {
-      console.log(`Requête ${counter}`);
-      counter++;
-    }
-  } catch (error) {
-    console.error("Une ou plusieurs requêtes ont échoué :", error);
+  for (let i = 1; i <= totalThreads; i++) {
+    // Créer un nouveau thread pour chaque requête
+    const worker = new Worker(__filename, {
+      workerData: { threadId: i, totalRequests: 1 },
+    });
   }
 }
 
-// Appelle la fonction principale
-fetchDataMultipleTimes();
+// Si c'est le thread principal, lancez les threads
+if (isMainThread) {
+  main();
+} else {
+  // Si c'est un thread de travail, effectuez les requêtes
+  performRequestsInWorker();
+}
