@@ -12,6 +12,27 @@ async function fetchData() {
   }
 }
 
+// Fonction pour créer un nouvel article
+async function createArticle() {
+  try {
+    const newArticle = {
+      data: {
+        title: "Title of article",
+        body: "this is the body",
+      },
+    };
+
+    const response = await axios.post(
+      "http://localhost:1337/api/articles",
+      newArticle
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la création d'un nouvel article :", error);
+    throw error; // Rejette la promesse en cas d'erreur
+  }
+}
+
 // Fonction exécutée dans chaque thread
 async function performRequestsInWorker() {
   const { threadId, totalRequests } = workerData;
@@ -19,7 +40,7 @@ async function performRequestsInWorker() {
 
   for (let i = 1; i <= totalRequests; i++) {
     console.log(`Thread ${threadId}, Requête ${i}: fetchData()`);
-    await fetchData();
+    await createArticle();
   }
 
   console.log(`Thread ${threadId} terminé.`);
@@ -27,7 +48,7 @@ async function performRequestsInWorker() {
 
 // Fonction principale pour lancer les threads
 function main() {
-  const totalThreads = 100;
+  const totalThreads = 10;
 
   for (let i = 1; i <= totalThreads; i++) {
     // Créer un nouveau thread pour chaque requête
