@@ -40,7 +40,8 @@ async function performRequestsInWorker() {
 
   for (let i = 1; i <= totalRequests; i++) {
     console.log(`Thread ${threadId}, Requête ${i}: fetchData()`);
-    await createArticle();
+    await fetchData();
+    // await createArticle();
   }
 
   console.log(`Thread ${threadId} terminé.`);
