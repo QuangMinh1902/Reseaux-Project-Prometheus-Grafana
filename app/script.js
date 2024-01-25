@@ -22,11 +22,13 @@ async function fetchDataMultipleTimes() {
     // Utilise Promise.all pour exécuter toutes les promesses en parallèle
     const results = await Promise.all(promises);
 
+    // Compteur pour les chiffres
+    let counter = 1;
+
     // Les résultats contiennent les données de chaque requête
     for (const result of results) {
-      for (const data of result.data) {
-        console.log(data);
-      }
+      console.log(`Requête ${counter}`);
+      counter++;
     }
   } catch (error) {
     console.error("Une ou plusieurs requêtes ont échoué :", error);
