@@ -49,6 +49,43 @@ async function createArticle() {
   }
 }
 
+// Fonction pour supprimer un article par ID
+async function deleteArticle(articleId) {
+  try {
+    const response = await axios.delete(
+      `http://localhost:1337/api/articles/${articleId}`
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      `Erreur lors de la suppression de l'article ${articleId}:`,
+      error
+    );
+    throw error;
+  }
+}
+
+// Fonction pour supprimer un article avec un ID aléatoire
+async function deleteRandomArticle() {
+  const { allIds } = await fetchData(); // Obtenez les IDs avec fetchData
+  const randomIndex = Math.floor(Math.random() * allIds.length);
+  const randomArticleId = allIds[randomIndex];
+
+  try {
+    console.log(`Suppression de l'article avec ID ${randomArticleId}`);
+    await deleteArticle(randomArticleId);
+    console.log(`Article avec ID ${randomArticleId} supprimé avec succès`);
+  } catch (error) {
+    console.error(
+      `Erreur lors de la suppression de l'article aléatoire :`,
+      error
+    );
+  }
+}
+
+// deleteRandomArticle();
+
 // Fonction exécutée dans chaque thread
 async function performRequestsInWorker() {
   const { threadId, totalRequests } = workerData;
@@ -61,6 +98,9 @@ async function performRequestsInWorker() {
 
       console.log(`Thread ${threadId}, Requête ${i}: createArticle()`);
       await createArticle();
+
+      console.log(`Thread ${threadId}, Requête ${i}: deleteRandomArticle()`);
+      await deleteRandomArticle();
     } catch (error) {
       console.error(
         `Thread ${threadId}, Erreur lors de la requête ${i}:`,
