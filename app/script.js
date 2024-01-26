@@ -57,7 +57,7 @@ async function deleteArticle(articleId) {
     console.log(`Article avec ID ${articleId} supprimé avec succès`);
     return response.data;
   } catch {
-    console.error(`Erreur lors de la suppression de l'article ${articleId}:`);
+    console.error(`L'article ${articleId} a été supprimé par un autre thread`);
   }
 }
 
