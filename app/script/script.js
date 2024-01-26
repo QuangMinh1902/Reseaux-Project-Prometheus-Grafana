@@ -14,6 +14,7 @@ async function fetchData() {
       allIds,
       responseData: response.data.data,
     };
+    // console.log(result);
     return result;
   } catch (error) {
     console.error("Erreur lors de la récupération des articles :", error);
@@ -50,15 +51,19 @@ async function createArticle() {
 
 // Fonction pour supprimer un article par ID
 async function deleteArticle(articleId) {
-  try {
-    const response = await axios.delete(
-      `http://localhost:1337/api/articles/${articleId}`
-    );
-    console.log(`Article avec ID ${articleId} supprimé avec succès`);
-    return response.data;
-  } catch {
-    console.error(`Erreur lors de la suppression de l'article ${articleId}:`);
-  }
+  // try {
+  const response = await axios.delete(
+    `http://localhost:1337/api/articles/${articleId}`
+  );
+  return response.data;
+  // }
+  //  catch (error) {
+  //   console.error(
+  //     `Erreur lors de la suppression de l'article ${articleId}:`,
+  //     error
+  //   );
+  //   throw error;
+  // }
 }
 
 // Fonction pour supprimer un article avec un ID aléatoire
@@ -67,6 +72,16 @@ async function deleteRandomArticle() {
   const randomIndex = Math.floor(Math.random() * allIds.length);
   const randomArticleId = allIds[randomIndex];
   await deleteArticle(randomArticleId);
+
+  // try {
+  // console.log(`Suppression de l'article avec ID ${randomArticleId}`);
+  // console.log(`Article avec ID ${randomArticleId} supprimé avec succès`);
+  // } catch (error) {
+  //   console.error(
+  //     `Erreur lors de la suppression de l'article aléatoire :`,
+  //     error
+  //   );
+  // }
 }
 
 // deleteRandomArticle();
@@ -78,13 +93,13 @@ async function performRequestsInWorker() {
 
   for (let i = 1; i <= totalRequests; i++) {
     try {
-      console.log(`Thread ${threadId}: createArticle() créer un article`);
-      await createArticle();
-
-      console.log(`Thread ${threadId}: fetchData() récupérer les articles`);
+      console.log(`Thread ${threadId}, Requête ${i}: fetchData()`);
       await fetchData();
 
-      console.log(`Thread ${threadId}: deleteRandomArticle()`);
+      console.log(`Thread ${threadId}, Requête ${i}: createArticle()`);
+      await createArticle();
+      
+      console.log(`Thread ${threadId}, Requête ${i}: deleteRandomArticle()`);
       await deleteRandomArticle();
     } catch (error) {
       console.error(
