@@ -3,10 +3,10 @@ services:
   strapi:
     build:
       context: ./app
-    container_name: dockerstrapi
     restart: unless-stopped
     ports:
       - "1337:1337"
+      # - "1333-1337:1337"
     environment:
       NODE_ENV: development
       DATABASE_CLIENT: postgres
@@ -20,12 +20,13 @@ services:
     depends_on:
       - postgres
     deploy:
-      resources:
-        limits:
-          cpus: "2" 
-          memory: 1G
-        reservations:
-          memory: 512M
+      # resources:
+      #   limits:
+      #     cpus: "1"
+      #     memory: 2G
+      #   reservations:
+      #     memory: 512M
+      # replicas: 5
     networks:
       - mynetwork
 
