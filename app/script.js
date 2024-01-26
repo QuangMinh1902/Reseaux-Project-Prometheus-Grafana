@@ -4,13 +4,16 @@ const axios = require("axios");
 // Fonction pour effectuer la requête une fois
 async function fetchData() {
   try {
-    const response = await axios.get("http://localhost:1337/api/articles");
+    const response = await axios.get("http://localhost:1337/api/articles?pagination[page]=1&pagination[pageSize]=100");
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Erreur lors de la récupération des articles :", error);
     throw error; // Rejette la promesse en cas d'erreur
   }
 }
+
+// fetchData();
 
 // Fonction pour créer un nouvel article
 async function createArticle() {
@@ -56,7 +59,6 @@ async function performRequestsInWorker() {
 
   console.log(`Thread ${threadId} terminé.`);
 }
-
 
 // Fonction principale pour lancer les threads
 function main() {
