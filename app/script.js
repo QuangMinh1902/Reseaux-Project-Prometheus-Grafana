@@ -2,6 +2,9 @@ const { Worker, isMainThread, workerData } = require("worker_threads");
 const axios = require("axios");
 
 // Fonction pour effectuer la requête une fois
+/* Pour voir les informations sur les articles,
+            décommenter la ligne 20,
+            vous les voyez dans le terminal */
 async function fetchData() {
   try {
     const response = await axios.get(
@@ -14,6 +17,7 @@ async function fetchData() {
       allIds,
       responseData: response.data.data,
     };
+    // console.log(response.data.data);
     return result;
   } catch (error) {
     console.error("Erreur lors de la récupération des articles :", error);
