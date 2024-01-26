@@ -51,19 +51,20 @@ async function createArticle() {
 
 // Fonction pour supprimer un article par ID
 async function deleteArticle(articleId) {
-  try {
-    const response = await axios.delete(
-      `http://localhost:1337/api/articles/${articleId}`
-    );
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.error(
-      `Erreur lors de la suppression de l'article ${articleId}:`,
-      error
-    );
-    throw error;
-  }
+  // try {
+  const response = await axios.delete(
+    `http://localhost:1337/api/articles/${articleId}`
+  );
+  // console.log("data supprimé :",  response.data);
+  return response.data;
+  // }
+  //  catch (error) {
+  //   console.error(
+  //     `Erreur lors de la suppression de l'article ${articleId}:`,
+  //     error
+  //   );
+  //   throw error;
+  // }
 }
 
 // Fonction pour supprimer un article avec un ID aléatoire
@@ -73,9 +74,9 @@ async function deleteRandomArticle() {
   const randomArticleId = allIds[randomIndex];
 
   try {
-    console.log(`Suppression de l'article avec ID ${randomArticleId}`);
+    // console.log(`Suppression de l'article avec ID ${randomArticleId}`);
     await deleteArticle(randomArticleId);
-    console.log(`Article avec ID ${randomArticleId} supprimé avec succès`);
+    // console.log(`Article avec ID ${randomArticleId} supprimé avec succès`);
   } catch (error) {
     console.error(
       `Erreur lors de la suppression de l'article aléatoire :`,
