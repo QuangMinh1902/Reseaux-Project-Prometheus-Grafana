@@ -103,7 +103,7 @@ async function performRequestsInWorker() {
 
 // Fonction principale pour lancer les threads
 function main() {
-  const totalThreads = 100;
+  const totalThreads = 50;
 
   for (let i = 1; i <= totalThreads; i++) {
     // Créer un nouveau thread pour chaque requête

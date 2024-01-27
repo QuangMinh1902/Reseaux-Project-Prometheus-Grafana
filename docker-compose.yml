@@ -5,8 +5,8 @@ services:
       context: ./app
     restart: unless-stopped
     ports:
-      - "1337:1337"
-      # - "1333-1337:1337"  // les ports pour plusieurs instances 
+      # - "1337:1337"
+      - "1336-1337:1337"
     environment:
       NODE_ENV: development
       DATABASE_CLIENT: postgres
@@ -19,14 +19,14 @@ services:
       - ./app:/opt/app
     depends_on:
       - postgres
-    # deploy:
+    deploy:
       # resources:
       #   limits:
       #     cpus: "1"
       #     memory: 2G
       #   reservations:
       #     memory: 512M
-      # replicas: 5
+      replicas: 2
     networks:
       - mynetwork
 
